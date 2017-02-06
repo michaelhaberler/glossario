@@ -28,7 +28,7 @@ def import_file(filename):
     dirname = os.path.abspath(os.path.dirname(filename))
     base, ext = os.path.splitext(os.path.basename(filename))
     f, filename, desc = imp.find_module(base, [dirname])
-    LOGGER.debug("file={}, desc={}".format(filename, desc))
+    LOGGER.debug("file=%s, desc=%s", filename, desc)
     return imp.load_module(base, f, filename, desc)
 
 
@@ -135,7 +135,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("file", type=str)
     args = parser.parse_args()
-    LOGGER.debug("args = {}".format(vars(args)))
+    LOGGER.debug("args = %s", vars(args))
 
 
     #mod = import_file(args.file)
