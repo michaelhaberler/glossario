@@ -9,3 +9,6 @@ a project may be a package or a module
 inspiration
 -----------
 * pylint (pyreverse, astroid)
+
+
+[![Build Status](https://travis-ci.org/michaelhaberler/glossario.svg?branch=master)](https://travis-ci.org/michaelhaberler/glossario)
