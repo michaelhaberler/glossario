@@ -1,5 +1,5 @@
 
-import lib_example_a
+from lib_example import lib_example_a
 
 
 def test_A():
