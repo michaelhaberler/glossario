@@ -19,9 +19,7 @@ import ast
 from collections import namedtuple
 
 
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(name)-12s %(levelname)-8s %(message)s')
-LOGGER = logging.getLogger(__file__)
+LOGGER = logging.getLogger(os.path.basename(__file__))
 
 
 def import_file(filename):
@@ -135,6 +133,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("file", type=str)
     args = parser.parse_args()
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(name)-12s %(levelname)-8s %(message)s')
     LOGGER.debug("args = %s", vars(args))
 
 
