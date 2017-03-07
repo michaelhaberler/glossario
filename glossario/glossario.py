@@ -67,6 +67,7 @@ def get_full_import_names(path):
                 name += '.'
             name += '.'.join([m for m in imp.name])
         names.append(name)
+    LOGGER.debug(names)
     return names
 
 
