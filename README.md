@@ -6,9 +6,12 @@ generates a glossary of all usages of project B in project A
 usage documentation)
 a project may be a package or a module
 
-inspiration
------------
+[![Build Status](https://travis-ci.org/michaelhaberler/glossario.svg?branch=master)](https://travis-ci.org/michaelhaberler/glossario)
+
+ideas/inspiration
+-----------------
+* use a sphinx builder - like
+  [sphinx.ext.coverage](http://www.sphinx-doc.org/en/stable/_modules/sphinx/ext/coverage.html#CoverageBuilder)
+  - and combine with [sphinx.ext.intersphinx]()
 * pylint (pyreverse, astroid)
 
-
-[![Build Status](https://travis-ci.org/michaelhaberler/glossario.svg?branch=master)](https://travis-ci.org/michaelhaberler/glossario)
