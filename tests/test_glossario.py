@@ -1,5 +1,5 @@
 
-from glossario import glossario
+from sphinxcontrib import glossario
 
 
 def test_import_file():
