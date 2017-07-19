@@ -15,3 +15,12 @@ ideas/inspiration
   - and combine with [sphinx.ext.intersphinx]()
 * pylint (pyreverse, astroid)
 
+status
+------
+
+```
+cd glossario
+export PYTHONPATH=`pwd`
+cd tests/doc_example
+sphinx-build -b html -d ../build/doc/doctrees   . ../build/doc/html -vv
+```

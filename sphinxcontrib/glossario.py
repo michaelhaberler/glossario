@@ -41,7 +41,7 @@ def get_imports(path):
     http://stackoverflow.com/questions/9008451/python-easy-way-to-read-all-import-statements-from-py-module
     """
     with open(path) as fh:
-       root = ast.parse(fh.read(), path)
+        root = ast.parse(fh.read(), path)
 
     for node in ast.iter_child_nodes(root):
         if isinstance(node, ast.Import):
@@ -56,6 +56,10 @@ def get_imports(path):
 
 
 def get_full_import_names(path):
+    """
+    .. todo::
+        Create a visitor from get_imports and get_full_import_names
+    """
     imports = get_imports(path)
     names = []
     for imp in imports:
@@ -102,6 +106,34 @@ class CallVisitor(ast.NodeVisitor):
     #    self.generic_visit(node)
 
 
+class ImportedVisitor(ast.NodeVisitor):
+
+    def __init__(self, imports):
+        self._import_stmts = imports
+        self._imported = []
+
+    def _in_imported(self, node_attr):
+        return any(node_attr in _import
+                   for _import in self._import_stmts)
+
+    def visit_Name(self, node):
+        if any(node.id in _import
+               for _import in self._import_stmts):
+            import ipdb; ipdb.set_trace()
+            self._imported.append(node)
+        self.generic_visit(node)
+
+    def visit_Attribute(self, node):
+        if any(node.value.id in _import
+               for _import in self._import_stmts):
+            import ipdb; ipdb.set_trace()
+            #node.attr + node.value
+            self._imported.append(node)
+        self.generic_visit(node)
+
+
+Call = namedtuple("Call", ["name", "lineno", "ast_node"])
+
 def get_full_used_names(path):
     """
     https://gist.github.com/jargnar/0946ab1d985e2b4ab776#file-function_calls_ast-py
@@ -112,17 +144,28 @@ def get_full_used_names(path):
         root = ast.parse(fh.read(), path)
 
         for n in ast.walk(root):
-            #LOGGER.debug(n)
+            LOGGER.debug(n)
             #for m in ast.iter_fields(n):
             #    LOGGER.debug('    ' + repr(m))
+            if isinstance(n, ast.Module):
+                #import ipdb; ipdb.set_trace()
+                LOGGER.debug('    %s', getattr(n, 'id', 'none'))
+            if isinstance(n, ast.ClassDef):
+                #import ipdb; ipdb.set_trace()
+                LOGGER.debug('%d: %s', n.lineno, getattr(n, 'name', 'none'))
+            if isinstance(n, ast.FunctionDef):
+                #import ipdb; ipdb.set_trace()
+                LOGGER.debug('%d: %s', n.lineno, getattr(n, 'name', 'none'))
+                #n.body
             if isinstance(n, ast.Call):
+                LOGGER.debug('%d: %s', n.lineno, getattr(n, 'name', 'none'))
                 #try:
                 #    LOGGER.debug(repr(n.func.attr))
                 #except AttributeError:
                 #    pass
                 visitor = CallVisitor()
                 visitor.visit(n.func)
-                calls.append((visitor.name, visitor.lineno))
+                calls.append(Call(visitor.name, visitor.lineno, n))
             #if isinstance(n, ast.Alias):
             #    LOGGER.debug(repr(n))
 
@@ -143,10 +186,23 @@ if __name__ == "__main__":
     #LOGGER.debug(pprint.pformat(module_members(mod)))
 
 
-    LOGGER.info("get_full_import_names")
-    for imp in get_full_import_names(args.file):
+    LOGGER.info("get_imports")
+    for imp in get_imports(args.file):
         LOGGER.debug(imp)
 
+    LOGGER.info("get_full_import_names")
+    full_import_names = get_full_import_names(args.file)
+    for imp in full_import_names:
+        LOGGER.debug(imp)
+
+    with open(args.file) as fh:
+        root = ast.parse(fh.read(), args.file)
+        impvisitor = ImportedVisitor(full_import_names)
+        impvisitor.visit(root)
+        #import ipdb; ipdb.set_trace()
+
+    # modulefinder
+    # https://docs.python.org/2/library/modulefinder.html
 
     LOGGER.info("get_full_used_names")
     names = get_full_used_names(args.file)
