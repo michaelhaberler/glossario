@@ -15,7 +15,7 @@ def test_get_imports():
 
 def test_get_full_import_names():
     names = glossario.get_full_import_names("tests/test_glossario.py")
-    assert names == ['glossario.glossario']
+    assert names == ['sphinxcontrib.glossario']
 
 
 def test_get_full_used_names():
