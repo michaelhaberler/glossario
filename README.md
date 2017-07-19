@@ -6,7 +6,7 @@ generates a glossary of all usages of project B in project A
 usage documentation)
 a project may be a package or a module
 
-[![Build Status](https://travis-ci.org/michaelhaberler/glossario.svg?branch=master)](https://travis-ci.org/michaelhaberler/glossario)
+[![Build Status](https://travis-ci.org/micviklui/glossario.svg?branch=master)](https://travis-ci.org/micviklui/glossario)
 
 ideas/inspiration
 -----------------
